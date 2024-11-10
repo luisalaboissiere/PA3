@@ -34,10 +34,10 @@ $(OBJ_DIR)/algorithms.o: $(SRC_DIR)/algorithms.cpp $(INCLUDE_DIR)/algorithms.hpp
 
 # Regra para gerar os tempos de execução
 plot_data: $(EXECUTABLE)
-	@echo "n,tempo_de_execucao" > fibonacci_iterative.csv
-	@for n in $$(seq 10 100 1000010); do \
-		output=$$($(EXECUTABLE) fibonacci $$n | grep "Tempo de execução" | awk -F": " '{print $$2}'); \
-		echo "$$n,$$output" >> fibonacci_iterative.csv; \
+	@echo "n,tempo_de_execucao" > fatorial_recursive_heavy.csv
+	@for n in $$(seq 10 100 5010); do \
+		output=$$($(EXECUTABLE) fatorial $$n | grep "Tempo de execução" | awk -F": " '{print $$2}'); \
+		echo "$$n,$$output" >> fatorial_recursive_heavy.csv; \
 	done
 	@echo "Dados de tempo de execução gerados em .csv"
 

@@ -50,9 +50,9 @@ int main(int argc, char* argv[]) {
     switch (op_code) {
         case 1:
             //result = factorial_recursive(n);
-            result = factorial_iterative(n);
+            //result = factorial_iterative(n);
             // Para medir a versão pesada, descomente a linha abaixo
-            // result = factorial_recursive_heavy(n);
+            result = factorial_recursive_heavy(n);
             break;
         case 2:
             //result = fibonacci_recursive(n);

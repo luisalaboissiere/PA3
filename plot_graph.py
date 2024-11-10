@@ -6,8 +6,15 @@ n_values = []
 execution_times = []
 #arquivo = 'fatorial_iterative.csv'
 #arquivo = 'fatorial_recursive.csv'
-arquivo = 'fibonacci_iterative.csv'
-#arquivo = 'fibonacci_recursive.csv'
+#arquivo = 'fatorial_recursive_heavy.csv'
+#arquivo = 'fibonacci_iterative.csv'
+arquivo = 'fibonacci_recursive.csv'
+
+#title_graph = 'Fatorial Iterativo'
+#title_graph = 'Fatorial Recursivo'
+#title_graph = 'Fatorial Recursivo Pesado'
+#title_graph = 'Fibonacci Iterativo'
+title_graph = 'Fibonacci Recursivo'
 
 # Lê o arquivo CSV e extrai os dados
 with open(arquivo, 'r') as file:
@@ -36,7 +43,7 @@ plt.plot(n_values, execution_times, 'o', label='Dados Medidos', markersize=4)
 plt.plot(n_values, regression_values, '-', label='Curva de Regressão', color='red')
 plt.xlabel('n (Valor de Entrada)')
 plt.ylabel('Tempo de Execução (segundos)')
-plt.title('Tempo de Execução do Fatorial com Curva de Regressão')
+plt.title(title_graph)
 plt.legend()
 plt.grid(visible=True, linestyle='--', alpha=0.5)
 plt.show()
