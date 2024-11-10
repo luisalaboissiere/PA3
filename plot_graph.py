@@ -4,9 +4,13 @@ import numpy as np
 # Inicializa listas para armazenar os valores de n e os tempos de execução
 n_values = []
 execution_times = []
+#arquivo = 'fatorial_iterative.csv'
+#arquivo = 'fatorial_recursive.csv'
+arquivo = 'fibonacci_iterative.csv'
+#arquivo = 'fibonacci_recursive.csv'
 
 # Lê o arquivo CSV e extrai os dados
-with open('execution_times.csv', 'r') as file:
+with open(arquivo, 'r') as file:
     next(file)  # Ignora o cabeçalho
     for line in file:
         n, time = line.strip().split(',')

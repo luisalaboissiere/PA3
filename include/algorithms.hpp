@@ -11,7 +11,7 @@ unsigned long long factorial_recursive_heavy(int n);
 // Declarações das funções de Fibonacci
 unsigned long long fibonacci_recursive(int n);
 unsigned long long fibonacci_iterative(int n);
-unsigned long long fibonacci_recursive_heavy(int n);
+/* unsigned long long fibonacci_recursive_heavy(int n); */
 
 // Declaração da função consume_resources
 void consume_resources();
