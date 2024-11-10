@@ -1,7 +1,7 @@
 # Compilador
 CXX = g++
 # Flags de compilação
-CXXFLAGS = -std=c++11 -pg -Iinclude  # Adiciona -pg para profiling
+CXXFLAGS = -std=c++11 -Iinclude
 
 # Pastas
 SRC_DIR = src
@@ -32,17 +32,18 @@ $(OBJ_DIR)/algorithms.o: $(SRC_DIR)/algorithms.cpp $(INCLUDE_DIR)/algorithms.hpp
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/algorithms.cpp -o $(OBJ_DIR)/algorithms.o
 
-# Regra para gerar os tempos de execução com gprof para uma entrada grande
-profile: $(EXECUTABLE)
-	@echo "Executando com entrada grande (100.000)..."
-	./$(EXECUTABLE) fatorial 100000 > /dev/null
-	@echo "Gerando relatório do gprof..."
-	gprof $(EXECUTABLE) gmon.out > gprof_output.txt
-	@echo "Relatório gerado em gprof_output.txt"
+# Regra para gerar os tempos de execução
+plot_data: $(EXECUTABLE)
+	@echo "n,tempo_de_execucao" > fatorial_recursive_heavy.csv
+	@for n in $$(seq 10 100 5010); do \
+		output=$$($(EXECUTABLE) fatorial $$n | grep "Tempo de execução" | awk -F": " '{print $$2}'); \
+		echo "$$n,$$output" >> fatorial_recursive_heavy.csv; \
+	done
+	@echo "Dados de tempo de execução gerados em .csv"
 
 # Limpeza
 clean:
-	rm -rf $(OBJ_DIR)/*.o $(BIN_DIR)/main gmon.out gprof_output.txt
+	rm -rf $(OBJ_DIR)/*.o $(BIN_DIR)/main execution_times.csv
 	@echo "Arquivos de objeto, executável e dados removidos"
 
-.PHONY: all clean profile
+.PHONY: all clean plot_data
