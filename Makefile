@@ -34,8 +34,8 @@ $(OBJ_DIR)/algorithms.o: $(SRC_DIR)/algorithms.cpp $(INCLUDE_DIR)/algorithms.hpp
 
 # Regra para gerar os tempos de execução com gprof para uma entrada grande
 profile: $(EXECUTABLE)
-	@echo "Executando com entrada grande (100.000)..."
-	./$(EXECUTABLE) fatorial 100000 > /dev/null
+	@echo "Executando com entrada grande (20)..."
+	./$(EXECUTABLE) 20 > /dev/null
 	@echo "Gerando relatório do gprof..."
 	gprof $(EXECUTABLE) gmon.out > gprof_output.txt
 	@echo "Relatório gerado em gprof_output.txt"

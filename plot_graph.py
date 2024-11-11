@@ -1,49 +1,67 @@
-import matplotlib.pyplot as plt
+import os
+import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
-# Inicializa listas para armazenar os valores de n e os tempos de execução
-n_values = []
-execution_times = []
-#arquivo = 'fatorial_iterative.csv'
-#arquivo = 'fatorial_recursive.csv'
-#arquivo = 'fatorial_recursive_heavy.csv'
-#arquivo = 'fibonacci_iterative.csv'
-arquivo = 'fibonacci_recursive.csv'
+# Diretório onde os arquivos CSV estão localizados
+diretorio_dados = './datas'
 
-#title_graph = 'Fatorial Iterativo'
-#title_graph = 'Fatorial Recursivo'
-#title_graph = 'Fatorial Recursivo Pesado'
-#title_graph = 'Fibonacci Iterativo'
-title_graph = 'Fibonacci Recursivo'
+# Lista dos arquivos CSV que queremos processar
+arquivos_csv = [
+    'tempos_fatorial_iterativo.csv',
+    'tempos_fatorial_recursivo.csv',
+    'tempos_fatorial_recursivo_intensivo.csv',
+    'tempos_fibonacci_iterativo.csv',
+    'tempos_fibonacci_recursivo.csv',
+    'tempos_fibonacci_recursivo_intensivo.csv'
+]
 
-# Lê o arquivo CSV e extrai os dados
-with open(arquivo, 'r') as file:
-    next(file)  # Ignora o cabeçalho
-    for line in file:
-        n, time = line.strip().split(',')
-        n_values.append(int(n))
-        # Remove " segundos" e converte para float
-        execution_times.append(float(time.replace(" segundos", "")))
+# Loop para ler cada arquivo e gerar um gráfico
+for arquivo in arquivos_csv:
+    caminho_arquivo = os.path.join(diretorio_dados, arquivo)
 
-# Converte as listas para arrays do numpy para facilitar a manipulação
-n_values_np = np.array(n_values)
-execution_times_np = np.array(execution_times)
+    try:
+        # Lê o arquivo CSV
+        df = pd.read_csv(caminho_arquivo)
+        
+        # Identifica a coluna de tempo automaticamente
+        col_tempo = [col for col in df.columns if 'tempo' in col]
+        
+        if not col_tempo:
+            print(f"Coluna de tempo não encontrada no arquivo {arquivo}")
+            continue
+        
+        col_tempo = col_tempo[0]  # Seleciona a primeira coluna de tempo encontrada
 
-# Ajuste de uma curva de regressão polinomial (exponencial pode ser uma escolha melhor para fatorial)
-# Aqui, tentaremos um ajuste de segundo grau como exemplo
-coefficients = np.polyfit(n_values_np, execution_times_np, 2)  # Ajuste polinomial de grau 2
-polynomial = np.poly1d(coefficients)
+        # Dados para o gráfico
+        x = df['num']
+        y = df[col_tempo]
 
-# Calcula os valores ajustados
-regression_values = polynomial(n_values_np)
+        # Gera o gráfico da função
+        plt.figure()
+        plt.plot(x, y, marker='o', label='Tempo de execução')
+        
+        # Calcula e plota a linha de tendência (regressão linear)
+        coef = np.polyfit(x, y, 1)  # Ajuste linear
+        poly1d_fn = np.poly1d(coef)  # Função de linha de tendência
+        plt.plot(x, poly1d_fn(x), '--r', label='Linha de Tendência')
 
-# Plota os dados originais e a curva de regressão
-plt.figure(figsize=(10, 6))
-plt.plot(n_values, execution_times, 'o', label='Dados Medidos', markersize=4)
-plt.plot(n_values, regression_values, '-', label='Curva de Regressão', color='red')
-plt.xlabel('n (Valor de Entrada)')
-plt.ylabel('Tempo de Execução (segundos)')
-plt.title(title_graph)
-plt.legend()
-plt.grid(visible=True, linestyle='--', alpha=0.5)
-plt.show()
+        # Configurações do gráfico
+        plt.xlabel('Número')
+        plt.ylabel('Tempo (segundos)')
+        plt.title(f'Tempo de execução - {arquivo}')
+        plt.legend()
+        plt.grid(True)
+
+        # Salva o gráfico como imagem
+        nome_grafico = os.path.splitext(arquivo)[0] + '.png'
+        caminho_grafico = os.path.join(diretorio_dados, nome_grafico)
+        plt.savefig(caminho_grafico)
+        plt.close()
+        
+        print(f"Gráfico com linha de tendência salvo como {caminho_grafico}")
+        
+    except FileNotFoundError:
+        print(f"Arquivo {caminho_arquivo} não encontrado.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao processar {caminho_arquivo}: {e}")

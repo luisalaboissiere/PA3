@@ -3,7 +3,7 @@
 
 // Definição da função consume_resources
 void consume_resources() {
-    for (int i = 0; i < 1000000; i++) {
+    for (int i = 0; i < 10000; i++) {
         std::sin(123.456); // Calcula o seno de um número várias vezes
     }
 }
@@ -53,10 +53,10 @@ unsigned long long fibonacci_iterative(int n) {
     return b;
 }
 
-/* // Implementação de Fibonacci Recursivo com Consumo de Recursos
+// Implementação de Fibonacci Recursivo com Consumo de Recursos
 unsigned long long fibonacci_recursive_heavy(int n) {
     if (n <= 1)
         return n;
     consume_resources(); // Consome recursos em cada chamada recursiva
     return fibonacci_recursive_heavy(n - 1) + fibonacci_recursive_heavy(n - 2);
-} */
+}
